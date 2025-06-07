@@ -15,9 +15,6 @@ class _HomePageState extends State<HomePage> {
     {'titulo': 'Aquaman', 'imagen': 'assets/images/aquaman.jpg'},
     {'titulo': 'Enviado por nadie', 'imagen': 'assets/images/aquaman.jpg'},
     {'titulo': 'Spiderman', 'imagen': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQmvxsv9WTSQH6GHGPtrqs7wsu8NaFFADr4U2l8waBK1fiuXtwbP4kwVZbcKLk&s=10'},
-    {'titulo': 'Aquaman', 'imagen': 'assets/images/aquaman.jpg'},
-    {'titulo': 'Enviado por nadie', 'imagen': 'assets/images/aquaman.jpg'},
-    {'titulo': 'Spiderman', 'imagen': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTQmvxsv9WTSQH6GHGPtrqs7wsu8NaFFADr4U2l8waBK1fiuXtwbP4kwVZbcKLk&s=10'},
   ];
 
   final List<Map<String, dynamic>> motivos = [
@@ -84,7 +81,12 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(4.0),
-          child: Image.asset('assets/images/logo.png'),
+          child: Image.asset(
+            'assets/images/logo.png',
+            width: 120,
+            height: 120,
+            filterQuality: FilterQuality.high,
+          ),
         ),
         actions: [
           IconButton(
@@ -93,7 +95,12 @@ class _HomePageState extends State<HomePage> {
           ),
           TextButton(
             onPressed: () {},
-            style: TextButton.styleFrom(foregroundColor: Colors.white),
+            style: TextButton.styleFrom(
+              backgroundColor: Colors.redAccent.shade700,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+            ),
             child: const Text("Iniciar sesión"),
           ),
         ],
@@ -125,32 +132,32 @@ class _HomePageState extends State<HomePage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
+                          const Text(
                             "Películas y series ilimitadas y mucho más",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontFamily: "arial",
+                            style: TextStyle(
+                              fontFamily: "roboto",
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
                           const SizedBox(height: 12),
-                          Text(
+                          const Text(
                             "A partir de S/28.90. Cancela cuando quieras.",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontFamily: "popins",
+                            style: TextStyle(
+                              fontFamily: "roboto",
                               fontSize: 18,
                               color: Colors.white70,
                             ),
                           ),
                           const SizedBox(height: 12),
-                          Text(
+                          const Text(
                             "¿Quieres ver Netflix ya? Ingresa tu email para\ncrear una cuenta o reiniciar tu membresía de Netflix.",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontFamily: "roboto",
+                            style: TextStyle(
+                              fontFamily: "arial",
                               fontSize: 16,
                               color: Colors.white,
                             ),
@@ -179,8 +186,9 @@ class _HomePageState extends State<HomePage> {
                                 icon: const Icon(Icons.arrow_forward, color: Colors.white),
                                 label: const Text("Comenzar", style: TextStyle(color: Colors.white)),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                                  backgroundColor: Colors.redAccent.shade700,
+                                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                                 ),
                               ),
                             ],
@@ -205,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white)),
                   const SizedBox(height: 12),
                   SizedBox(
-                    height: 200,
+                    height: 240,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: peliculas.length,
@@ -213,13 +221,44 @@ class _HomePageState extends State<HomePage> {
                         final peli = peliculas[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Column(
+                          child: Stack(
+                            alignment: Alignment.bottomLeft,
                             children: [
-                              Text('${index + 1}', style: const TextStyle(color: Colors.white, fontSize: 22)),
-                              const SizedBox(height: 8),
-                              peli['imagen']!.startsWith('http')
-                                  ? Image.network(peli['imagen']!, height: 150)
-                                  : Image.asset(peli['imagen']!, height: 150),
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: peli['imagen']!.startsWith('http')
+                                    ? Image.network(
+                                        peli['imagen']!,
+                                        height: 220,
+                                        width: 140,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.asset(
+                                        peli['imagen']!,
+                                        height: 220,
+                                        width: 140,
+                                        fit: BoxFit.cover,
+                                      ),
+                              ),
+                              Positioned(
+                                left: 6,
+                                bottom: 6,
+                                child: Text(
+                                  '${index + 1}',
+                                  style: const TextStyle(
+                                    fontSize: 38,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                    shadows: [
+                                      Shadow(
+                                        offset: Offset(2, 2),
+                                        blurRadius: 4,
+                                        color: Colors.black,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         );
@@ -228,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   const SizedBox(height: 24),
                   const Text("Más motivos para unirte", style: TextStyle(
-                      fontFamily: "roboto",fontSize: 20, color: Colors.white)),
+                      fontFamily: "popins",fontSize: 20, color: Colors.white)),
                   const SizedBox(height: 12),
                   ...motivos.map((m) => Card(
                         color: Colors.deepPurple.shade800,
@@ -240,7 +279,7 @@ class _HomePageState extends State<HomePage> {
                       )),
                   const SizedBox(height: 24),
                   const Text("Preguntas frecuentes", style: TextStyle(
-                      fontFamily: "roboto",fontSize: 20, color: Colors.white)),
+                      fontFamily: "popins",fontSize: 20, color: Colors.white)),
                   const SizedBox(height: 12),
                   ...preguntas.asMap().entries.map((entry) {
                     final i = entry.key;
